@@ -1,16 +1,6 @@
 import {Page} from 'playwright';
 import EmployeesPage from "./EmployeesPage";
-
-type Employee = {
-    name: string;
-    email: string;
-    addressLine1: string;
-    addressLine2: string;
-    city: string;
-    zipCode: string;
-    hiringDate: string;
-    jobTitle: string;
-}
+import type {Employee} from "./types";
 
 export default class EmployeeCreateFormPage {
     private readonly page: Page;
