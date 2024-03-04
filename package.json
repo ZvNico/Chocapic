@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "tests:integration": "jest",
-    "tests:end-to-end": "playwright test"
+    "tests:e2e": "playwright test"
   },
   "dependencies": {
     "axios": "^1.2.0",
