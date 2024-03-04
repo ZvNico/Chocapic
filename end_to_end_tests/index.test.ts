@@ -25,6 +25,27 @@ test('home page', async ({page}) => {
     await expect(page).toHaveTitle(/Home/);
 })
 
+// Test for recreate the issue Add an employee with long value in inputs
+test("Add an employee with long value in inputs", async ({page}) => {
+    const employeeCreateFormPage = new EmployeeCreateFormPage(page);
+
+    await employeeCreateFormPage.navigate();
+    await employeeCreateFormPage.fillForm({
+        zipCode: "1".repeat(50),
+    });
+
+    // Response we are expecting
+    const responsePromise = page.waitForResponse(
+        (response) => response.status() === 500
+    );
+
+    await employeeCreateFormPage.submit();
+
+    // Get the response and check the status
+    const response = await responsePromise;
+    expect(response.status()).toBe(500);
+});
+
 test('create a user', async ({page}) => {
     const employeesPage = new EmployeesPage(page)
     const employeeCreateFormPage = new EmployeeCreateFormPage(page)
