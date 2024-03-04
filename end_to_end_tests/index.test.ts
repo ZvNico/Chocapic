@@ -1,7 +1,13 @@
 import {test, expect} from '@playwright/test'
-import EmployeeCreateFormPage from "./EmployeeCreateFormPage";
-import {ResetDatabasePage} from "./ResetDatabasePage";
-import EmployeesPage from "./EmployeesPage";
+import {
+    ResetDatabasePage,
+    EmployeesPage,
+    TeamsPage,
+    EmployeeDetailsPage,
+    EmployeeCreateFormPage,
+    TeamCreateFormPage
+} from "./pages"
+
 import {Browser, chromium, Page} from "playwright";
 import {Employee} from "./types";
 
@@ -26,6 +32,22 @@ test('home page', async ({page}) => {
     await expect(page).toHaveTitle(/Home/);
 })
 
+test('Can create user', async ({page}) => {
+    const employeesPage = new EmployeesPage(page)
+    const employeeCreateFormPage = new EmployeeCreateFormPage(page)
+
+    await employeeCreateFormPage.navigate()
+    await employeeCreateFormPage.createEmployee({
+        name: 'John Doe',
+        email: 'john.doe@gmail.com'
+    })
+
+    await employeesPage.navigate()
+    const isUserPresent = await employeesPage.isUserPresent('John Doe', 'john.doe@gmail.com')
+    expect(isUserPresent).toBe(true)
+})
+
+
 // Test for recreate the issue Add an employee with long value in inputs
 test("Add an employee with long value in inputs", async ({page}) => {
     const employeeCreateFormPage = new EmployeeCreateFormPage(page);
@@ -44,21 +66,6 @@ test("Add an employee with long value in inputs", async ({page}) => {
     expect(isUserPresent).toBe(true);
 });
 
-
-test('create a user', async ({page}) => {
-    const employeesPage = new EmployeesPage(page)
-    const employeeCreateFormPage = new EmployeeCreateFormPage(page)
-
-    await employeeCreateFormPage.navigate()
-    await employeeCreateFormPage.createEmployee({
-        name: 'John Doe',
-        email: 'john.doe@gmail.com'
-    })
-
-    await employeesPage.navigate()
-    const isUserPresent = await employeesPage.isUserPresent('John Doe', 'john.doe@gmail.com')
-    expect(isUserPresent).toBe(true)
-})
 
 test(' Employees are wipe when their team is deleted', async ({page}) => {
         return
@@ -83,7 +90,7 @@ test(' Employees are wipe when their team is deleted', async ({page}) => {
     }
 )
 
-test('Add employees with the same email', async ({page}) => {
+test('Cannot add two employees with same email', async ({page}) => {
         const employeeCreateFormPage = new EmployeeCreateFormPage(page)
         const employeesPage = new EmployeesPage(page)
 
@@ -100,3 +107,36 @@ test('Add employees with the same email', async ({page}) => {
         expect(result).toEqual([true, false])
     }
 )
+
+test('Update employee adress', async ({page}) => {
+    const employeeCreateFormPage = new EmployeeCreateFormPage(page)
+    const employeesPage = new EmployeesPage(page)
+    const employeeDetailPage = new EmployeeDetailsPage(page)
+
+    const employee = {
+        name: 'John Doe',
+        email: 'john.doe@gmail.com'
+    }
+
+    const newAddress = {
+        addressLine1: 'Address line 1',
+        addressLine2: 'Address line 2',
+        city: 'City 1',
+        zipCode: '1'
+    }
+
+    await employeeCreateFormPage.navigate()
+    await employeeCreateFormPage.createEmployee(employee)
+
+    await employeesPage.navigate()
+    const employeeId = await employeesPage.userId(employee.name, employee.email)
+
+    if (!employeeId) {
+        throw new Error('Employee not found')
+    }
+    await employeeDetailPage.navigate(Number(employeeId))
+    await employeeDetailPage.updateAddress(newAddress.addressLine1, newAddress.addressLine2, newAddress.city, newAddress.zipCode)
+
+    const address = await employeeDetailPage.address()
+    expect(address).toEqual(newAddress)
+})

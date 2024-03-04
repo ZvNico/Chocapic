@@ -1,6 +1,6 @@
 import {Page} from 'playwright';
 
-export class ResetDatabasePage {
+export default class ResetDatabasePage {
     private readonly page: Page;
 
     constructor(page: Page) {

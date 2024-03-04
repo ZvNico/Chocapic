@@ -1,5 +1,5 @@
 import {Page} from 'playwright';
-import {Employee} from "./types";
+import {Employee} from "../types";
 
 export default class EmployeeDetailsPage {
     private readonly page: Page;
@@ -9,7 +9,7 @@ export default class EmployeeDetailsPage {
     }
 
     async navigate(employeeId: number) {
-        await this.page.goto(`/employee/${employeeId}`);
+        await this.page.goto(`https://c.hr.dmerej.info/employee/${employeeId}`);
     }
 
 
