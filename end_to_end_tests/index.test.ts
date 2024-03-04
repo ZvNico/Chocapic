@@ -1,7 +1,6 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from "@playwright/test";
 
-
-test('home page', async ({ page }) => {
-  await page.goto('http://127.0.0.1:8000')
+test("home page", async ({ page }) => {
+  await page.goto("https://c.hr.dmerej.info/");
   await expect(page).toHaveTitle(/Home/);
-})
+});
