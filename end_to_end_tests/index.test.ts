@@ -23,7 +23,15 @@ test("create a user", async ({ page }) => {
 
 test(" Employees are wipe when their team is deleted", async ({ page }) => {});
 
-test("Add an employee with long value in inputs", async ({ page }) => {});
+test("Add an employee with long value in inputs", async ({ page }) => {
+  const employeeCreateFormPage = new EmployeeCreateFormPage(page);
+
+  await employeeCreateFormPage.navigate();
+  await employeeCreateFormPage.fillForm({
+    zipCode: "1".repeat(50),
+  });
+  await employeeCreateFormPage.submit();
+});
 
 test("Add employees with the same email", async ({ page }) => {
   const employeeCreateFormPage = new EmployeeCreateFormPage(page);
