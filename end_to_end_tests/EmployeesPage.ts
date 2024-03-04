@@ -12,6 +12,12 @@ export default class EmployeesPage {
     }
 
     async isUserPresent(name: string, email: string): Promise<boolean> {
-        const users = await this.page.$$eval('.employee-name', elements => elements.map(e => e.textContent));
+        const users = await this.page.$$eval('.employee-row', rows =>
+            rows.map(row => ({
+                name: row.querySelector('.employee-name')?.textContent || '',
+                email: row.querySelector('.employee-email')?.textContent || ''
+            }))
+        );
+        return users.some(user => user.name === name && user.email === email);
     }
 }
