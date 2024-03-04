@@ -89,15 +89,19 @@ test(' Employees are wipe when their team is deleted', async ({page}) => {
 
 test('Add employees with the same email', async ({page}) => {
         const employeeCreateFormPage = new EmployeeCreateFormPage(page)
+        const employeesPage = new EmployeesPage(page)
 
-        //Create the first employee
-        await employeeCreateFormPage.navigate()
-        await employeeCreateFormPage.fillForm()
-        await employeeCreateFormPage.submit()
+        const arrayEmployees = ["Jahn Doe", "Farah Doe"]
 
-        //Create the second employee with the same email
-        await employeeCreateFormPage.navigate()
-        await employeeCreateFormPage.fillForm()
-        await employeeCreateFormPage.submit()
+    const arrayUsersIsPresent = [];
+    for (const name of arrayEmployees) {
+            await employeeCreateFormPage.navigate()
+            await employeeCreateFormPage.fillForm({ name: name })
+            await employeeCreateFormPage.submit()
+
+        arrayUsersIsPresent.push(await employeesPage.isUserPresent(name, "john.doe@gmail.com"));
+    }
+    const result = await Promise.all(arrayUsersIsPresent)
+    expect(result).toEqual([true,false])
     }
 )
