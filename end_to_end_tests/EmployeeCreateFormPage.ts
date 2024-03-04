@@ -1,4 +1,5 @@
 import {Page} from 'playwright';
+import EmployeesPage from "./EmployeesPage";
 
 type Employee = {
     name: string;
@@ -58,26 +59,26 @@ export default class EmployeeCreateFormPage {
         await this.page.click('.btn.btn-primary');
     }
 
-    async fillForm(employee: Employee | null = null) {
-        if (employee === null) {
-            employee = {
-                name: 'John Doe',
-                email: 'john.doe@gmail.com',
-                addressLine1: '123 Main St',
-                addressLine2: 'Apt 2',
-                city: 'New York',
-                zipCode: '10001',
-                hiringDate: '2022-01-01',
-                jobTitle: 'Software Engineer'
-            }
-            await this.fillName(employee.name);
-            await this.fillEmail(employee.email);
-            await this.fillAddressLine1(employee.addressLine1);
-            await this.fillAddressLine2(employee.addressLine2);
-            await this.fillCity(employee.city);
-            await this.fillZipCode(employee.zipCode);
-            await this.fillHiringDate(employee.hiringDate);
-            await this.fillJobTitle(employee.jobTitle);
+    async fillForm(employee: Partial<Employee> = {}) {
+        const defaultEmployee: Employee = {
+            name: 'John Doe',
+            email: 'john.doe@gmail.com',
+            addressLine1: '123 Main St',
+            addressLine2: 'Apt 2',
+            city: 'New York',
+            zipCode: '10001',
+            hiringDate: '2022-01-01',
+            jobTitle: 'Software Engineer'
         }
+        const newEmployee: Employee = {...defaultEmployee, ...employee};
+
+        await this.fillName(newEmployee.name);
+        await this.fillEmail(newEmployee.email);
+        await this.fillAddressLine1(newEmployee.addressLine1);
+        await this.fillAddressLine2(newEmployee.addressLine2);
+        await this.fillCity(newEmployee.city);
+        await this.fillZipCode(newEmployee.zipCode);
+        await this.fillHiringDate(newEmployee.hiringDate);
+        await this.fillJobTitle(newEmployee.jobTitle);
     }
 }
