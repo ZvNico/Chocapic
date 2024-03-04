@@ -23,6 +23,7 @@ test("create a user", async ({ page }) => {
 
 test(" Employees are wipe when their team is deleted", async ({ page }) => {});
 
+// Test for recreate the issue Add an employee with long value in inputs
 test("Add an employee with long value in inputs", async ({ page }) => {
   const employeeCreateFormPage = new EmployeeCreateFormPage(page);
 
@@ -30,7 +31,17 @@ test("Add an employee with long value in inputs", async ({ page }) => {
   await employeeCreateFormPage.fillForm({
     zipCode: "1".repeat(50),
   });
+
+  // Response we are expecting
+  const responsePromise = page.waitForResponse(
+    (response) => response.status() === 500
+  );
+
   await employeeCreateFormPage.submit();
+
+  // Get the response ans check the status
+  const response = await responsePromise;
+  expect(response.status()).toBe(500);
 });
 
 test("Add employees with the same email", async ({ page }) => {
