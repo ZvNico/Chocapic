@@ -31,6 +31,33 @@ test('home page', async ({page}) => {
     await expect(page).toHaveTitle(/Home/);
 })
 
+test('Can create a user', async ({page}) => {
+    const employeesPage = new EmployeesPage(page)
+    const employeeCreateFormPage = new EmployeeCreateFormPage(page)
+
+    await employeeCreateFormPage.navigate()
+    await employeeCreateFormPage.createEmployee({
+        name: 'John Doe',
+        email: 'john.doe@gmail.com'
+    })
+
+    await employeesPage.navigate()
+    const isUserPresent = await employeesPage.isUserPresent('John Doe', 'john.doe@gmail.com')
+    expect(isUserPresent).toBe(true)
+})
+
+test('Can create a team', async ({page}) => {
+    const teamsPage = new TeamsPage(page)
+    const teamCreateFormPage = new TeamCreateFormPage(page)
+
+    await teamCreateFormPage.navigate()
+    await teamCreateFormPage.createTeam('Engineering')
+
+    await teamsPage.navigate()
+    const isTeamPresent = await teamsPage.isTeamPresent('Engineering')
+    expect(isTeamPresent).toBe(true)
+})
+
 // Test for recreate the issue Add an employee with long value in inputs
 test("Add an employee with long value in inputs", async ({page}) => {
     const employeeCreateFormPage = new EmployeeCreateFormPage(page);
@@ -91,7 +118,6 @@ test('Add employees with the same email', async ({page}) => {
 )
 
 
-
 test('Update employee adress', async ({page}) => {
     const employeeCreateFormPage = new EmployeeCreateFormPage(page)
     const employeesPage = new EmployeesPage(page)
@@ -123,4 +149,33 @@ test('Update employee adress', async ({page}) => {
 
     const address = await employeeDetailPage.address()
     expect(address).toEqual(newAddress)
+})
+
+test('Update employee contract', async ({page}) => {
+    const employeeCreateFormPage = new EmployeeCreateFormPage(page)
+    const employeesPage = new EmployeesPage(page)
+    const employeeDetailPage = new EmployeeDetailsPage(page)
+
+    const employee = {
+        name: 'John Doe',
+        email: 'john.doe@gmail.com'
+    }
+
+    const newContract = {
+        hiringDate: '1111-11-11',
+        jobTitle: 'Job title 1'
+    }
+
+    await employeesPage.navigate()
+    const employeeId = await employeesPage.userId(employee.name, employee.email)
+
+    if (!employeeId) {
+        throw new Error('Employee not found')
+    }
+    await employeeDetailPage.navigate(Number(employeeId))
+    await employeeDetailPage.updateContract(newContract.hiringDate, newContract.jobTitle)
+
+    const contract = await employeeDetailPage.contract()
+    expect(contract).toEqual(newContract)
+
 })
