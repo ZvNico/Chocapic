@@ -1,5 +1,4 @@
 import {Page} from 'playwright';
-import EmployeesPage from "./EmployeesPage";
 import type {Employee} from "./types";
 
 export default class EmployeeCreateFormPage {
@@ -13,43 +12,7 @@ export default class EmployeeCreateFormPage {
         await this.page.goto('https://c.hr.dmerej.info/add_employee');
     }
 
-    async fillName(name: string) {
-        await this.page.fill('#id_name', name);
-    }
-
-    async fillEmail(email: string) {
-        await this.page.fill('#id_email', email);
-    }
-
-    async fillAddressLine1(addressLine1: string) {
-        await this.page.fill('#id_address_line1', addressLine1);
-    }
-
-    async fillAddressLine2(addressLine2: string) {
-        await this.page.fill('#id_address_line2', addressLine2);
-    }
-
-    async fillCity(city: string) {
-        await this.page.fill('#id_city', city);
-    }
-
-    async fillZipCode(zipCode: string) {
-        await this.page.fill('#id_zip_code', zipCode);
-    }
-
-    async fillHiringDate(hiringDate: string) {
-        await this.page.fill('#id_hiring_date', hiringDate);
-    }
-
-    async fillJobTitle(jobTitle: string) {
-        await this.page.fill('#id_job_title', jobTitle);
-    }
-
-    async submit() {
-        await this.page.click('.btn.btn-primary');
-    }
-
-    async fillForm(employee: Partial<Employee> = {}) {
+    async createEmployee(employee: Partial<Employee> = {}) {
         const defaultEmployee: Employee = {
             name: 'John Doe',
             email: 'john.doe@gmail.com',
@@ -62,13 +25,14 @@ export default class EmployeeCreateFormPage {
         }
         const newEmployee: Employee = {...defaultEmployee, ...employee};
 
-        await this.fillName(newEmployee.name);
-        await this.fillEmail(newEmployee.email);
-        await this.fillAddressLine1(newEmployee.addressLine1);
-        await this.fillAddressLine2(newEmployee.addressLine2);
-        await this.fillCity(newEmployee.city);
-        await this.fillZipCode(newEmployee.zipCode);
-        await this.fillHiringDate(newEmployee.hiringDate);
-        await this.fillJobTitle(newEmployee.jobTitle);
+        await this.page.fill('#id_name', newEmployee.name);
+        await this.page.fill('#id_email', newEmployee.email);
+        await this.page.fill('#id_address_line1', newEmployee.addressLine1);
+        await this.page.fill('#id_address_line2', newEmployee.addressLine2);
+        await this.page.fill('#id_city', newEmployee.city);
+        await this.page.fill('#id_zip_code', newEmployee.zipCode);
+        await this.page.fill('#id_hiring_date', newEmployee.hiringDate);
+        await this.page.fill('#id_job_title', newEmployee.jobTitle);
+        await this.page.click('.btn.btn-primary');
     }
 }

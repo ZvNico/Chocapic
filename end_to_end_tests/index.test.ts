@@ -32,11 +32,9 @@ test("Add an employee with long value in inputs", async ({page}) => {
     const employeesPage = new EmployeesPage(page);
 
     await employeeCreateFormPage.navigate();
-    await employeeCreateFormPage.fillForm({
+    await employeeCreateFormPage.createEmployee({
         zipCode: "1".repeat(50),
     });
-
-    await employeeCreateFormPage.submit();
 
     await employeesPage.navigate();
     const isUserPresent = await employeesPage.isUserPresent(
@@ -52,11 +50,10 @@ test('create a user', async ({page}) => {
     const employeeCreateFormPage = new EmployeeCreateFormPage(page)
 
     await employeeCreateFormPage.navigate()
-    await employeeCreateFormPage.fillForm({
+    await employeeCreateFormPage.createEmployee({
         name: 'John Doe',
         email: 'john.doe@gmail.com'
     })
-    await employeeCreateFormPage.submit()
 
     await employeesPage.navigate()
     const isUserPresent = await employeesPage.isUserPresent('John Doe', 'john.doe@gmail.com')
@@ -81,8 +78,7 @@ test(' Employees are wipe when their team is deleted', async ({page}) => {
 
         employees.map(async (employee) => {
             await employeeCreateFormPage.navigate()
-            await employeeCreateFormPage.fillForm(employee)
-            await employeeCreateFormPage.submit()
+            await employeeCreateFormPage.createEmployee(employee)
         })
     }
 )
@@ -93,15 +89,14 @@ test('Add employees with the same email', async ({page}) => {
 
         const arrayEmployees = ["Jahn Doe", "Farah Doe"]
 
-    const arrayUsersIsPresent = [];
-    for (const name of arrayEmployees) {
+        const arrayUsersIsPresent = [];
+        for (const name of arrayEmployees) {
             await employeeCreateFormPage.navigate()
-            await employeeCreateFormPage.fillForm({ name: name })
-            await employeeCreateFormPage.submit()
+            await employeeCreateFormPage.createEmployee({name: name})
 
-        arrayUsersIsPresent.push(await employeesPage.isUserPresent(name, "john.doe@gmail.com"));
-    }
-    const result = await Promise.all(arrayUsersIsPresent)
-    expect(result).toEqual([true,false])
+            arrayUsersIsPresent.push(await employeesPage.isUserPresent(name, "john.doe@gmail.com"));
+        }
+        const result = await Promise.all(arrayUsersIsPresent)
+        expect(result).toEqual([true, false])
     }
 )
