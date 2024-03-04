@@ -80,25 +80,28 @@ test("Add an employee with long value in inputs", async ({ page }) => {
 });
 
 test(" Employees are wipe when their team is deleted", async ({ page }) => {
-  return;
   const employeesPage = new EmployeesPage(page);
   const employeeCreateFormPage = new EmployeeCreateFormPage(page);
+  const teamsPage = new TeamsPage(page);
+  const teamCreateFormPage = new TeamCreateFormPage(page);
 
-  const employees: Partial<Employee>[] = [
-    {
-      name: "John Doe",
-      email: "john.doe@gmail.com",
-    },
-    {
-      name: "Jane Doe",
-      email: "jane.doe@gmail.com",
-    },
-  ];
-
-  employees.map(async (employee) => {
-    await employeeCreateFormPage.navigate();
-    await employeeCreateFormPage.createEmployee(employee);
+  await employeeCreateFormPage.navigate();
+  await employeeCreateFormPage.createEmployee({
+    name: "Laurie",
+    email: "test.wipe@gmail.com",
   });
+
+  await employeesPage.navigate();
+  const isUserPresent = await employeesPage.isUserPresent(
+    "Laurie",
+    "test.wipe@gmail.com"
+  );
+
+  await teamCreateFormPage.navigate();
+  await teamCreateFormPage.createTeam("Wipe");
+
+  await teamsPage.navigate();
+  const isTeamPresent = await teamsPage.isTeamPresent("Wipe");
 });
 
 test("Add employees with the same email", async ({ page }) => {
