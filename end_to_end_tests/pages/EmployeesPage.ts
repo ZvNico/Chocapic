@@ -11,7 +11,7 @@ export default class EmployeesPage {
         await this.page.goto('https://c.hr.dmerej.info/employees');
     }
 
-    async userId(name: string, email: string): Promise<string | undefined> {
+    async userId(name: string, email: string): Promise<string> {
         const users = await this.page.$$eval('table tbody tr', rows =>
             rows.map(row => {
                 const cells = row.querySelectorAll('td');
@@ -25,7 +25,16 @@ export default class EmployeesPage {
             })
         );
         const user = users.find(user => user.name === name && user.email === email);
-        return user ? user.id : '';
+        if (!user) throw new Error(`User ${name} with email ${email} not found`);
+        if (!user.id) throw new Error(`User ${name} with email ${email} id not found`);
+        return user.id;
+    }
+
+    async deleteUser(name: string, email: string) {
+        const id = await this.userId(name, email);
+        await this.page.click(`a[href="/employee/${id}/delete"]`);
+        await this.page.click('.btn.btn-danger');
+        await this.page.click('.btn.btn-danger');
     }
 
     async isUserManager(name: string, email: string): Promise<boolean> {
@@ -40,7 +49,8 @@ export default class EmployeesPage {
             })
         );
         const user = users.find(user => user.name === name && user.email === email);
-        return user ? user.isManager : false;
+        if (!user) throw new Error(`User ${name} with email ${email} not found`);
+        return user.isManager;
     }
 
     async isUserPresent(name: string, email: string): Promise<boolean> {

@@ -12,7 +12,6 @@ export default class EmployeeDetailsPage {
         await this.page.goto(`https://c.hr.dmerej.info/employee/${employeeId}`);
     }
 
-
     async updateBasicInfo(name: string = 'John Doe', email: string = 'john.doe@gmail.com') {
         await this.page.click('a[href^="/employee/"][href$="/basic_info"]');
         await this.page.fill('#id_name', name);
