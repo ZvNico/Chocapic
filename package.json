@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A contacts database",
   "main": "index.js",
-  "repository": "https://github.com/zvnico/Chocapic",
+  "repository": "https://github.com/dmerejkowsky/kata-contacts",
   "author": "Dimitri Merejkowsky",
   "license": "MIT",
   "private": true,
