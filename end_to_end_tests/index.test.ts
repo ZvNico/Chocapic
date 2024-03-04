@@ -29,23 +29,23 @@ test('home page', async ({page}) => {
 // Test for recreate the issue Add an employee with long value in inputs
 test("Add an employee with long value in inputs", async ({page}) => {
     const employeeCreateFormPage = new EmployeeCreateFormPage(page);
+    const employeesPage = new EmployeesPage(page);
 
     await employeeCreateFormPage.navigate();
     await employeeCreateFormPage.fillForm({
         zipCode: "1".repeat(50),
     });
 
-    // Response we are expecting
-    const responsePromise = page.waitForResponse(
-        (response) => response.status() === 500
-    );
-
     await employeeCreateFormPage.submit();
 
-    // Get the response and check the status
-    const response = await responsePromise;
-    expect(response.status()).toBe(500);
+    await employeesPage.navigate();
+    const isUserPresent = await employeesPage.isUserPresent(
+        "Laurie",
+        "test.zipCode@gmail.com"
+    );
+    expect(isUserPresent).toBe(true);
 });
+
 
 test('create a user', async ({page}) => {
     const employeesPage = new EmployeesPage(page)
