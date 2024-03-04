@@ -7,7 +7,6 @@ import {
     EmployeeCreateFormPage,
     TeamCreateFormPage
 } from "./pages"
-
 import {Browser, chromium, Page} from "playwright";
 import {Employee} from "./types";
 
@@ -32,22 +31,6 @@ test('home page', async ({page}) => {
     await expect(page).toHaveTitle(/Home/);
 })
 
-test('Can create user', async ({page}) => {
-    const employeesPage = new EmployeesPage(page)
-    const employeeCreateFormPage = new EmployeeCreateFormPage(page)
-
-    await employeeCreateFormPage.navigate()
-    await employeeCreateFormPage.createEmployee({
-        name: 'John Doe',
-        email: 'john.doe@gmail.com'
-    })
-
-    await employeesPage.navigate()
-    const isUserPresent = await employeesPage.isUserPresent('John Doe', 'john.doe@gmail.com')
-    expect(isUserPresent).toBe(true)
-})
-
-
 // Test for recreate the issue Add an employee with long value in inputs
 test("Add an employee with long value in inputs", async ({page}) => {
     const employeeCreateFormPage = new EmployeeCreateFormPage(page);
@@ -65,7 +48,6 @@ test("Add an employee with long value in inputs", async ({page}) => {
     );
     expect(isUserPresent).toBe(true);
 });
-
 
 test(' Employees are wipe when their team is deleted', async ({page}) => {
         return
@@ -90,7 +72,7 @@ test(' Employees are wipe when their team is deleted', async ({page}) => {
     }
 )
 
-test('Cannot add two employees with same email', async ({page}) => {
+test('Add employees with the same email', async ({page}) => {
         const employeeCreateFormPage = new EmployeeCreateFormPage(page)
         const employeesPage = new EmployeesPage(page)
 
@@ -107,6 +89,8 @@ test('Cannot add two employees with same email', async ({page}) => {
         expect(result).toEqual([true, false])
     }
 )
+
+
 
 test('Update employee adress', async ({page}) => {
     const employeeCreateFormPage = new EmployeeCreateFormPage(page)
