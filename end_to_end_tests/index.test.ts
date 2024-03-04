@@ -1,6 +1,12 @@
 import {test, expect} from '@playwright/test'
 import EmployeeCreateFormPage from "./EmployeeCreateFormPage";
+import {ResetDatabasePage} from "./ResetDatabasePage";
 
+test.beforeAll(async ({page}) => {
+    const resetDatabasePage = new ResetDatabasePage(page)
+    await resetDatabasePage.navigate()
+    await resetDatabasePage.resetDatabase()
+})
 
 test('home page', async ({page}) => {
     await page.goto('https://c.hr.dmerej.info')
