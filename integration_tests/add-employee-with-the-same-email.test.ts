@@ -3,6 +3,7 @@ import {Client} from 'pg'
 import {afterAll, beforeAll, expect, test} from '@jest/globals'
 import {Employee} from "../types";
 import {addEmployee} from "./helper-api";
+import {queryEmployeesIds} from "./helper-db";
 
 const DATABASE_URL = 'postgresql://hr:hr@localhost:5433/hr'
 let client: Client
@@ -24,7 +25,7 @@ test('adding employees with the same email', async () => {
     url = 'http://127.0.0.1:8000/add_employee'
     const params = new URLSearchParams()
 
-    const employees: Employee[] =[ {
+    const employees: Employee[] = [{
         name: 'John Doe',
         email: 'john.doe@gmail.com',
         address_line1: '123 Main St',
@@ -33,21 +34,23 @@ test('adding employees with the same email', async () => {
         zip_code: '12345',
         hiring_date: '2021-01-01',
         job_title: 'Software Engineer'
-    }, { name: 'Farah Doe',
+    }, {
+        name: 'Farah Doe',
         email: 'john.doe@gmail.com',
         address_line1: '2 bis chemin',
         address_line2: '',
         city: 'Anytown',
         zip_code: '12345',
         hiring_date: '2021-01-0"',
-        job_title: 'Data Engineer'}]
-    employees.forEach(async (employee) => {
+        job_title: 'Data Engineer'
+    }]
+    for (const employee of employees) {
+        console.log("employee", employee)
         await addEmployee(employee)
-    })
+    }
 
-    const res = await client.query('SELECT COUNT(*) FROM hr_basicinfo WHERE email ="john.doe@gmail.com"')
+    const res = await queryEmployeesIds(client, {email: employees[0].email})
 
-    expect(res).toEqual(1)
-
+    expect(res.length).toEqual(1)
     await client.end()
 })

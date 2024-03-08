@@ -92,8 +92,10 @@ export async function queryTeamById(client: Client, id: number) {
     return res.rows[0];
 }
 
-export async function queryEmployeesIds(client: Client, basicInfo: BasicInfo) {
+export async function queryEmployeesIds(client: Client, basicInfo: Partial<BasicInfo>) {
     const res = await queryBasicInfos(client, basicInfo);
+    console.log(res.rows);
+    console.log(res.rows.map((row) => row.id));
     return res.rows.map((row) => row.id);
 }
 
