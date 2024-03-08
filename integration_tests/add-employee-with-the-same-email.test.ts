@@ -26,8 +26,8 @@ test('adding employees with the same email', async () => {
     const params = new URLSearchParams()
 
     const employees: Employee[] = [{
-        name: 'John Doe',
-        email: 'john.doe@gmail.com',
+        name: 'Jack Doe',
+        email: 'doe@gmail.com',
         address_line1: '123 Main St',
         address_line2: '',
         city: 'Anytown',
@@ -36,7 +36,7 @@ test('adding employees with the same email', async () => {
         job_title: 'Software Engineer'
     }, {
         name: 'Farah Doe',
-        email: 'john.doe@gmail.com',
+        email: 'doe@gmail.com',
         address_line1: '2 bis chemin',
         address_line2: '',
         city: 'Anytown',
