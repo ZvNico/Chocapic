@@ -3,13 +3,31 @@ import axios from "axios";
 import {Client, QueryResult} from 'pg'
 
 
-type Entity = Partial<Employee | Team | Address | Contract | BasicInfo>;
+type Entity = Employee | Team | Address | Contract | BasicInfo
 
-export async function queryEntities(client: Client, entity: Entity, tableName: string): Promise<QueryResult<any>> {
+export function dbEntityToApiEntity(entity: any): Entity {
+    const newEntity: any = {};
+
+    for (const [key, value] of Object.entries(entity)) {
+        if (value === null) {
+            newEntity[key] = "";
+        } else if (typeof value === 'number') {
+            newEntity[key] = (value as number).toString();
+        } else if (typeof value === 'object' && value instanceof Date) {
+            newEntity[key] = value.toISOString().split('T')[0];
+        } else {
+            newEntity[key] = value;
+        }
+    }
+
+    return newEntity as Entity;
+}
+
+export async function queryEntities(client: Client, entity: Partial<Entity>, tableName: string): Promise<QueryResult<any>> {
     // Get an array of key-value pairs from the entity
     const entries = Object.entries(entity);
     // Create the placeholders and the values array
-    const placeholders = entries.map((value, i) => `${value[0]} = $${i + 1}`).join(', ');
+    const placeholders = entries.map((value, i) => `${value[0]} = $${i + 1}`).join(' AND ');
     const values = entries.map((value) => value[1]);
     const query = `SELECT *
                    FROM ${tableName}
@@ -79,7 +97,13 @@ export async function queryEmployeeAggregate(client: Client, employee: BasicInfo
     const basicInfo = await queryBasicInfoById(client, employeeId);
     const address = await queryAddressById(client, employeeId);
     const contract = await queryContractById(client, employeeId);
-    return {id: employeeId, ...basicInfo, ...address, ...contract} as Employee;
+    const employeeAggregate = {
+        ...basicInfo,
+        ...address,
+        ...contract
+    }
+    delete employeeAggregate.id;
+    return dbEntityToApiEntity(employeeAggregate) as Employee;
 }
 
 
