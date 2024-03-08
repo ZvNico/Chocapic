@@ -45,7 +45,6 @@ test('adding employees with the same email', async () => {
         job_title: 'Data Engineer'
     }]
     for (const employee of employees) {
-        console.log("employee", employee)
         await addEmployee(employee)
     }
 
