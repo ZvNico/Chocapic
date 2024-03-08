@@ -1,0 +1,17 @@
+- extends 'hr/base.haml'
+- block title
+  Team members
+
+- block content
+  %h2 Team Members
+
+  %p
+    Name: {{ team.name }}
+ 
+  %ul
+    - for member in members
+      %li {{ member.basic_info.name }}
+        - if member.is_manager
+          %strong manager
+    - empty
+      This team has no members

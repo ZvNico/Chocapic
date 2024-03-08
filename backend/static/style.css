@@ -1,0 +1,12 @@
+body {
+  margin: 5% auto;
+  max-width: 73%;
+}
+
+fieldset {
+  border-width: 2px;
+  border-style: groove;
+  border-color: threedface;
+  padding: 10px;
+  margin: 10px;
+}

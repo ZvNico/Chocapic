@@ -1,0 +1,33 @@
+- extends 'hr/base.haml'
+- block title
+  Employees
+- block content
+
+  - if employees
+    %h2 Employees ({{ employees| length }})
+    %table.table
+      %thead
+        %tr
+          %th name
+          %th email
+          %th manager?
+          %th Actions
+      %tbody
+        - for employee in employees
+          %tr
+            %td #{employee.basic_info.name}
+            %td #{employee.basic_info.email}
+            %td
+              - if employee.is_manager
+                %strong yes
+              - else
+                no
+            %td
+              %a.btn.btn-primary(href="{% url 'hr:employee' employee.id %}") Edit
+            %td
+              %a.btn.btn-primary(href="{% url 'hr:delete_employee' employee.id %}") Delete
+    - else
+      %h2 Employees
+
+      No employees yet.
+

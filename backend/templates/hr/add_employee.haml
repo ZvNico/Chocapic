@@ -1,0 +1,19 @@
+- extends 'hr/base.haml'
+- load django_bootstrap5
+- block title
+  Add Employee
+
+- block content
+  %h2 Add new employee
+
+  %form.form(method="post" action="{% url 'hr:add_employee' %}")
+    %fieldset
+      %legend Basic Info
+      - bootstrap_form basic_info_form
+    %fieldset
+      %legend Address
+      - bootstrap_form address_form
+    %fieldset
+      %legend Contract
+      - bootstrap_form contract_form
+      - bootstrap_button button_type="submit" content="Add"

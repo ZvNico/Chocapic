@@ -1,0 +1,12 @@
+- extends 'hr/base.haml'
+- load django_bootstrap5
+- block title
+  Edit Legal Information
+
+- block content
+
+  %h2 Edit Employee Legal Information
+
+  %form(action="{% url 'hr:contract' employee.id %}" method='post')
+    - bootstrap_form form
+    - bootstrap_button type="submit" content="Update"

@@ -1,0 +1,43 @@
+[tool.isort]
+profile = "black"
+
+[tool.poetry]
+name = "hr-db"
+version = "0.0.1"
+description = "HR DB"
+authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
+readme = "README.md"
+license = "BSD-3-Clause"
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+django = "^4.2"
+django-browser-reload = "^1.12"
+django-cors-headers = "^4.3"
+python-dotenv = "^1.0"
+gunicorn = "^21.2"
+django-hamlpy = "^1.7"
+django-bootstrap5 = "^23.3"
+dj-database-url = "^2.1.0"
+psycopg2-binary = "^2.9.9"
+
+[tool.poetry.dev-dependencies]
+invoke = "^2.2"
+pywatchman = "^1.4.1"
+
+black = "^23.11"
+isort = "^5.12.0"
+pytest-django = "^4.7"
+flake8 = "^6.1"
+
+pytest = "^7.4"
+Faker = "^20.1"
+playwright = "^1.40"
+pytest-playwright = "^0.4"
+pytest-xdist = "^3.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

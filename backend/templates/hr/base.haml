@@ -1,0 +1,26 @@
+- load static
+- load django_browser_reload
+- load django_bootstrap5
+
+!!!5
+%html
+  %head
+    %title HR DB -
+      - block title
+    %meta(charset="utf-8")
+    %meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    %link(rel="shortcut icon" href='{% static "favicon.ico" %}')
+    - bootstrap_css
+    - bootstrap_javascript
+    %link(rel="stylesheet" href='{% static "style.css" %}')
+  %body
+
+    %nav
+      %a(href="/") Home
+
+    - block content
+
+    %footer
+      Version 1.0.4
+
+   - django_browser_reload_script

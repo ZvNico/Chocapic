@@ -1,0 +1,13 @@
+- extends 'hr/base.haml'
+- load django_bootstrap5
+- block title
+  Edit Address
+
+- block content
+  %h2 Edit Addres
+
+  Editing address of #{employee.basic_info.name}
+
+  %form.form(action="{% url 'hr:address'  employee.id %}" method="post")
+   - bootstrap_form form
+   - bootstrap_button type="submit" content="Update"

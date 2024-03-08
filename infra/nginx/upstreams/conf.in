@@ -1,0 +1,3 @@
+upstream sock-@letter@ {
+  server unix:/srv/hr/run/@letter@.sock;
+}

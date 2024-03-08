@@ -1,0 +1,30 @@
+- extends 'hr/base.haml'
+
+- block title
+  Home
+
+- block content
+
+  %h1#title
+    HR DB - Home
+
+  %h2
+    Employees
+  %ul
+    %li
+      %a(href="{% url 'hr:employees' %}") List employees
+     %li
+      %a(href="{% url 'hr:add_employee' %}") Add new employee
+
+  %h2 Teams
+
+  %ul
+    %li
+      %a(href="{% url 'hr:teams' %}") List teams
+    %li
+      %a(href="{% url 'hr:add_team' %}") Create new team
+  %h2 Danger zone
+
+  %ul
+    %li
+     %a(href="{% url 'hr:reset_db' %}") Reset database

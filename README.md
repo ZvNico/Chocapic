@@ -64,7 +64,7 @@ yarn
 
 ```
 yarn playwright install chromium
-yarn tests:end-to-end
+yarn tests:e2e
 ```
 
 ## Running integration tests

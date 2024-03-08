@@ -1,0 +1,14 @@
+- extends 'hr/base.haml'
+
+- block title
+  Promote Employee
+
+- block content
+
+  %h2 Promote employee
+  %p
+    {{ employee.basic_info.name }} is going to be promoted as a manager
+  %form(action="{% url 'hr:promote' employee.id %}" method='post')
+    {% csrf_token %}
+    %button(type="submit" class="btn btn-primary") Proceed
+

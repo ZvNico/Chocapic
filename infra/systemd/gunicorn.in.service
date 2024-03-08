@@ -1,0 +1,23 @@
+[Unit]
+Description=gunicorn daemon @letter@
+Requires=gunicorn-@letter@.socket
+After=network.target
+
+[Service]
+Type=notify
+User=hr
+Group=hr
+WorkingDirectory=/srv/hr/src/group@group@
+ExecStart=/srv/hr/src/group@group@/.venv/bin/gunicorn app.wsgi --capture-output --log-file /var/log/hr/gunicorn-@letter@.log
+
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+Environment=DJANGO_DB_PATH=/srv/hr/data/@letter@.db
+Environment=DJANGO_DEBUG=false
+Environment=DJANGO_SECRET_KEY=brvn8Ilw2g4OMWitoNJjBx2nDd1OJT6uF_EogIQ5DIw
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+

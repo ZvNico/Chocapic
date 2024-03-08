@@ -1,0 +1,16 @@
+- extends 'hr/base.haml'
+- block title
+  Reset database
+
+- block content
+  %h2 Reset Database
+  
+  %p
+    You are about to delete all the information from the database.
+  
+  %p
+   This cannot be undone
+  
+  %form(method="post" action="{% url 'hr:reset_db' %}")
+    {% csrf_token %}
+    %button(type="submit" class="btn btn-danger") Proceed

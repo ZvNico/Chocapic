@@ -1,0 +1,23 @@
+- extends 'hr/base.haml'
+- block title
+  Edit Employee
+
+- block content
+  %h2 Edit Employee
+  %p
+    {{ employee.basic_info.name }} - {{ employee.basic_info.email }}
+  %p
+    {{ employee.contract.job_title }}
+  %p
+    Hired on {{ employee.contract.hiring_date }}
+  %ul
+    %li
+      %a(href="{% url 'hr:basic_info' employee.id %}") Update basic info
+    %li
+      %a(href="{% url 'hr:address' employee.id %}") Update address
+    %li
+      %a(href="{% url 'hr:contract' employee.id %}") Update contract
+    %li
+      %a(href="{% url 'hr:promote' employee.id %}") Promote as manager
+    %li
+      %a(href="{% url 'hr:add_to_team' employee.id %}") Add to team

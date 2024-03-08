@@ -1,0 +1,16 @@
+- extends 'hr/base.haml'
+
+- block title
+  Delete Team
+
+- block content
+  %h2 Delete Team
+  %p
+    You are about to delete the team "#{team.name}"
+  %p
+  This cannot be undone
+
+  %form(method="post" action="{% url 'hr:delete_team' team.id %}")
+   - csrf_token
+   %button(type="submit" class="btn btn-danger") Proceed
+

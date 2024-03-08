@@ -1,0 +1,13 @@
+- extends 'hr/base.haml'
+- load django_bootstrap5
+- block title
+  Add to eam
+
+- block content
+
+  %h2 Add new member to existing team
+
+  Name: {{ employee.basic_info.name }}
+  %form.form(method="post" action="{% url 'hr:add_to_team' employee.id %}")
+    - bootstrap_form form
+    - bootstrap_button button_type="submit" content="Add"

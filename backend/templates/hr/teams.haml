@@ -1,0 +1,25 @@
+- extends 'hr/base.haml'
+- block title
+  Teams
+
+- block content
+
+  %h2 Teams
+
+  - if teams
+    %table.table
+     %thead
+      %tr
+        %th name
+        %th action
+     %tbody
+       - for team in teams
+        %tr
+          %td #{team.name}
+          %td
+            %a(href="{% url 'hr:members' team.id %}") View members
+          %td
+            %a.btn.btn-danger(href="{% url 'hr:delete_team' team.id %}") Delete
+  - else
+    No teams yet
+
