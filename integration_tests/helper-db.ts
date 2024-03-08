@@ -74,8 +74,8 @@ export async function queryEmployeesIds(client: Client, basicInfo: BasicInfo) {
     return res.rows.map((row) => row.id);
 }
 
-export async function queryEmployeeAggregate(client: Client, employee: Partial<Employee>): Promise<Employee> {
-    const employeeId = (await queryEmployeesIds(client, employee as BasicInfo))[0];
+export async function queryEmployeeAggregate(client: Client, employee: BasicInfo): Promise<Employee> {
+    const employeeId = (await queryEmployeesIds(client, employee))[0];
     const basicInfo = await queryBasicInfoById(client, employeeId);
     const address = await queryAddressById(client, employeeId);
     const contract = await queryContractById(client, employeeId);
