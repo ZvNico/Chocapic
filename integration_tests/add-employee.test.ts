@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {Client} from 'pg'
 import {afterAll, beforeAll, expect, test} from '@jest/globals'
+import {Employee} from "../types";
+import {addEmployee} from "./helper";
 
 const DATABASE_URL = 'postgresql://hr:hr@localhost:5433/hr'
 let client: Client
@@ -18,14 +20,25 @@ test('adding an employee', async () => {
     let url = 'http://127.0.0.1:8000/reset_db'
     await axios.post(url)
 
-    url = 'http://127.0.0.1:8000/add_team'
+
+    url = 'http://127.0.0.1:8000/add_employee'
     const params = new URLSearchParams()
-    params.append('name', 'Typescript devs')
-    await axios.post(url, params)
 
-    const res = await client.query('SELECT name FROM hr_team')
+    const employee: Employee = {
+        name: 'John Doe',
+        email: 'john.doe@gmail.com',
+        address_line_1: '123 Main St',
+        address_line_2: '',
+        city: 'Anytown',
+        zip_code: '12345',
+        hiring_date: '2021-01-01',
+        job_title: 'Software Engineer'
+    }
+    await addEmployee(employee)
 
-    expect(res.rows).toEqual([{name: 'Typescript devs'}])
+    const res = await client.query('SELECT * FROM hr_employee')
+
+    expect(res.rows).toEqual(employee)
 
     await client.end()
 })

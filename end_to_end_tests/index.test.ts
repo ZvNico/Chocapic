@@ -8,7 +8,7 @@ import {
     TeamCreateFormPage
 } from "./pages"
 import {Browser, chromium, Page} from "playwright";
-import {Employee} from "./types";
+import {Employee} from "../types";
 
 let browser: Browser;
 let page: Page;
@@ -76,17 +76,17 @@ test("Add an employee with long value in inputs", async ({page}) => {
     expect(isUserPresent).toBe(true);
 });
 
-test("Employees are wipe when their team is deleted", async ({ page }) => {
-  const employeesPage = new EmployeesPage(page);
-  const employeeCreateFormPage = new EmployeeCreateFormPage(page);
-  const teamsPage = new TeamsPage(page);
-  const teamCreateFormPage = new TeamCreateFormPage(page);
+test("Employees are wipe when their team is deleted", async ({page}) => {
+        const employeesPage = new EmployeesPage(page);
+        const employeeCreateFormPage = new EmployeeCreateFormPage(page);
+        const teamsPage = new TeamsPage(page);
+        const teamCreateFormPage = new TeamCreateFormPage(page);
 
-  await employeeCreateFormPage.navigate();
-  await employeeCreateFormPage.createEmployee({
-    name: "Laurie",
-    email: "test.wipe@gmail.com",
-  });
+        await employeeCreateFormPage.navigate();
+        await employeeCreateFormPage.createEmployee({
+            name: "Laurie",
+            email: "test.wipe@gmail.com",
+        });
 
         const employees: Partial<Employee>[] = [
             {

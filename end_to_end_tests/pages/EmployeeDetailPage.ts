@@ -1,5 +1,5 @@
 import {Page} from 'playwright';
-import {Employee} from "../types";
+import type {Employee} from "../../types";
 
 export default class EmployeeDetailsPage {
     private readonly page: Page;
