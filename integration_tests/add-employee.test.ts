@@ -2,7 +2,9 @@ import axios from 'axios'
 import {Client} from 'pg'
 import {afterAll, beforeAll, expect, test} from '@jest/globals'
 import {Employee} from "../types";
-import {addEmployee} from "./helper";
+import {addEmployee, resetDatabase} from "./helper-api";
+import * as url from "url";
+import {queryBasicInfos} from "./helper-db";
 
 const DATABASE_URL = 'postgresql://hr:hr@localhost:5433/hr'
 let client: Client
@@ -17,12 +19,7 @@ afterAll(async () => {
 })
 
 test('adding an employee', async () => {
-    let url = 'http://127.0.0.1:8000/reset_db'
-    await axios.post(url)
-
-
-    url = 'http://127.0.0.1:8000/add_employee'
-    const params = new URLSearchParams()
+    await resetDatabase()
 
     const employee: Employee = {
         name: 'John Doe',
@@ -36,11 +33,7 @@ test('adding an employee', async () => {
     }
     await addEmployee(employee)
 
-    const db_employee_basic_info = await client.query(
-        'SELECT name, email FROM hr_basicinfo WHERE name = $1 AND email = $2',
-        [employee.name, employee.email]
-    );
-
+    const db_employee_basic_info = await queryBasicInfos(client, {email: employee.email});
     console.log(db_employee_basic_info.rows)
 
     await client.end()

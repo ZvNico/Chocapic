@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {Client} from 'pg'
 import {afterAll, beforeAll, expect, test} from '@jest/globals'
-import {addTeam} from "./helper";
+import {addTeam, resetDatabase} from "./helper-api";
 
 const DATABASE_URL = 'postgresql://hr:hr@localhost:5433/hr'
 let client: Client
@@ -16,8 +16,8 @@ afterAll(async () => {
 })
 
 test('adding a team', async () => {
-    let url = 'http://127.0.0.1:8000/reset_db'
-    await axios.post(url)
+
+    await resetDatabase()
 
     await addTeam({name: 'Typescript devs'})
 
