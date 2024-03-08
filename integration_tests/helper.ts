@@ -2,13 +2,13 @@ import type {Employee, Team} from '../types';
 import axios from "axios";
 
 
-function addEntity(url: string, entity: Employee | Team) {
+async function addEntity(url: string, entity: Employee | Team) {
     const params = new URLSearchParams();
     const newEntity = entity as { [key: string]: string };
     for (const key in newEntity) {
         params.append(key, newEntity[key]);
     }
-    return axios.post(url, params);
+    await axios.post(url, params);
 }
 
 export function addEmployee(employee: Employee) {

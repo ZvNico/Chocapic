@@ -16,8 +16,8 @@ export default class EmployeeCreateFormPage {
         const defaultEmployee: Employee = {
             name: 'John Doe',
             email: 'john.doe@gmail.com',
-            address_line_1: '123 Main St',
-            address_line_2: 'Apt 2',
+            address_line1: '123 Main St',
+            address_line2: 'Apt 2',
             city: 'New York',
             zip_code: '10001',
             hiring_date: '2022-01-01',
@@ -27,8 +27,8 @@ export default class EmployeeCreateFormPage {
 
         await this.page.fill('#id_name', newEmployee.name);
         await this.page.fill('#id_email', newEmployee.email);
-        await this.page.fill('#id_address_line1', newEmployee.address_line_1);
-        await this.page.fill('#id_address_line2', newEmployee.address_line_2);
+        await this.page.fill('#id_address_line1', newEmployee.address_line1);
+        await this.page.fill('#id_address_line2', newEmployee.address_line2);
         await this.page.fill('#id_city', newEmployee.city);
         await this.page.fill('#id_zip_code', newEmployee.zip_code);
         await this.page.fill('#id_hiring_date', newEmployee.hiring_date);

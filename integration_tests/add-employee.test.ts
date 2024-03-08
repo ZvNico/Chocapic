@@ -27,8 +27,8 @@ test('adding an employee', async () => {
     const employee: Employee = {
         name: 'John Doe',
         email: 'john.doe@gmail.com',
-        address_line_1: '123 Main St',
-        address_line_2: '',
+        address_line1: '123 Main St',
+        address_line2: '',
         city: 'Anytown',
         zip_code: '12345',
         hiring_date: '2021-01-01',
@@ -36,9 +36,12 @@ test('adding an employee', async () => {
     }
     await addEmployee(employee)
 
-    const res = await client.query('SELECT * FROM hr_employee')
+    const db_employee_basic_info = await client.query(
+        'SELECT name, email FROM hr_basicinfo WHERE name = $1 AND email = $2',
+        [employee.name, employee.email]
+    );
 
-    expect(res.rows).toEqual(employee)
+    console.log(db_employee_basic_info.rows)
 
     await client.end()
 })

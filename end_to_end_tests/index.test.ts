@@ -65,7 +65,7 @@ test("Add an employee with long value in inputs", async ({page}) => {
 
     await employeeCreateFormPage.navigate();
     await employeeCreateFormPage.createEmployee({
-        zipCode: "1".repeat(50),
+        zip_code: "1".repeat(50),
     });
 
     await employeesPage.navigate();
