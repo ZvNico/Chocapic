@@ -76,7 +76,7 @@ test("Add an employee with long value in inputs", async ({page}) => {
     expect(isUserPresent).toBe(true);
 });
 
-test(" Employees are wipe when their team is deleted", async ({ page }) => {
+test("Employees are wipe when their team is deleted", async ({ page }) => {
   const employeesPage = new EmployeesPage(page);
   const employeeCreateFormPage = new EmployeeCreateFormPage(page);
   const teamsPage = new TeamsPage(page);
