@@ -14,7 +14,12 @@ export function dbEntityToApiEntity(entity: any): Entity {
         } else if (typeof value === 'number') {
             newEntity[key] = (value as number).toString();
         } else if (typeof value === 'object' && value instanceof Date) {
-            newEntity[key] = value.toISOString().split('T')[0];
+            const date = value as Date;
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
+            const day = String(date.getDate()).padStart(2, '0');
+
+            newEntity[key] = `${year}-${month}-${day}`;
         } else {
             newEntity[key] = value;
         }
