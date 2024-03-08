@@ -3,13 +3,36 @@ import axios from "axios";
 import {Client, QueryResult} from 'pg'
 
 
-type Entity = Partial<Employee | Team | Address | Contract | BasicInfo>;
+type Entity = Employee | Team | Address | Contract | BasicInfo
 
-export async function queryEntities(client: Client, entity: Entity, tableName: string): Promise<QueryResult<any>> {
+export function dbEntityToApiEntity(entity: any): Entity {
+    const newEntity: any = {};
+
+    for (const [key, value] of Object.entries(entity)) {
+        if (value === null) {
+            newEntity[key] = "";
+        } else if (typeof value === 'number') {
+            newEntity[key] = (value as number).toString();
+        } else if (typeof value === 'object' && value instanceof Date) {
+            const date = value as Date;
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
+            const day = String(date.getDate()).padStart(2, '0');
+
+            newEntity[key] = `${year}-${month}-${day}`;
+        } else {
+            newEntity[key] = value;
+        }
+    }
+
+    return newEntity as Entity;
+}
+
+export async function queryEntities(client: Client, entity: Partial<Entity>, tableName: string): Promise<QueryResult<any>> {
     // Get an array of key-value pairs from the entity
     const entries = Object.entries(entity);
     // Create the placeholders and the values array
-    const placeholders = entries.map((value, i) => `${value[0]} = $${i + 1}`).join(', ');
+    const placeholders = entries.map((value, i) => `${value[0]} = $${i + 1}`).join(' AND ');
     const values = entries.map((value) => value[1]);
     const query = `SELECT *
                    FROM ${tableName}
@@ -74,12 +97,18 @@ export async function queryEmployeesIds(client: Client, basicInfo: BasicInfo) {
     return res.rows.map((row) => row.id);
 }
 
-export async function queryEmployeeAggregate(client: Client, employee: Partial<Employee>): Promise<Employee> {
-    const employeeId = (await queryEmployeesIds(client, employee as BasicInfo))[0];
+export async function queryEmployeeAggregate(client: Client, employee: BasicInfo): Promise<Employee> {
+    const employeeId = (await queryEmployeesIds(client, employee))[0];
     const basicInfo = await queryBasicInfoById(client, employeeId);
     const address = await queryAddressById(client, employeeId);
     const contract = await queryContractById(client, employeeId);
-    return {id: employeeId, ...basicInfo, ...address, ...contract} as Employee;
+    const employeeAggregate = {
+        ...basicInfo,
+        ...address,
+        ...contract
+    }
+    delete employeeAggregate.id;
+    return dbEntityToApiEntity(employeeAggregate) as Employee;
 }
 
 
